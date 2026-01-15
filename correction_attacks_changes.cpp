@@ -11,9 +11,9 @@
 //    - ILP_TIME_LIMIT_MS: ILP solver time limit in milliseconds.
 //    - MIN_ROWS_TO_TRY_ILP: minimum number of collected equations before attempting ILP.
 // 3) Modified the three recovery functions
-//    - recover_s1_skip_comp(...)
-//    - recover_s1_skip(...)
-//    - recover_s1_skip_shuff(...)
+//    - recover_s1_skip_comp(...)  Recover for one component of secret key.
+//    - recover_s1_skip(...)  Adaptive MILP Attack in the Plain Skipping-Fault Setting, removing the ineffective variant.
+//    - recover_s1_skip_shuff(...)  Adaptive MILP Attack under Shuffling.
 //    by replacing the original NTL::solve()-based linear-system solve with an ILP/Gurobi path.
 //    In particular, we attempt ILP as soon as collected >= MIN_ROWS_TO_TRY_ILP, so recovery may
 //    succeed before collecting the full N equations.
@@ -340,4 +340,5 @@ Vec<ZZ_pX> recover_s1_skip_shuff(const uint8_t *sk, const uint8_t *pk, size_t ml
     }
 
     return s1_recovered;
+
 }
