@@ -23,7 +23,7 @@
 //   Putting a C++ header under extern "C" may cause C linkage to be applied incorrectly,
 //   leading to signature mismatches, re-declarations, or link errors.
 
-# Skipping Fault Correction Attack via MILP
+# Improving Skipping Fault Correction Attack via MILP
 
 ## Prerequisites
 This code requires:
