@@ -1,7 +1,7 @@
 // Our modifications were implemented on 2025-10-03.
 //
 // This file is an improved variant of the original implementation.
-// Upstream/original-author reference:
+// Original-author reference:
 // - Repository: https://github.com/Chair-for-Security-Engineering/dilithium-faults
 // - File: skippingFault/correction_attacks.cpp
 //
@@ -11,12 +11,17 @@
 //    - ILP_TIME_LIMIT_MS: ILP solver time limit in milliseconds.
 //    - MIN_ROWS_TO_TRY_ILP: minimum number of collected equations before attempting ILP.
 // 3) Modified the three recovery functions
-//    - recover_s1_skip_comp(...)
-//    - recover_s1_skip(...)
-//    - recover_s1_skip_shuff(...)
+//    - recover_s1_skip_comp(...)  Recover for one component of secret key.
+//    - recover_s1_skip(...)  Adaptive MILP Attack in the Plain Skipping-Fault Setting, removing the ineffective variant.
+//    - recover_s1_skip_shuff(...)  Adaptive MILP Attack under Shuffling.
 //    by replacing the original NTL::solve()-based linear-system solve with an ILP/Gurobi path.
 //    In particular, we attempt ILP as soon as collected >= MIN_ROWS_TO_TRY_ILP, so recovery may
 //    succeed before collecting the full N equations.
+//
+// IMPORTANT include-order note (Gurobi):
+// - Keep #include "gurobi_c++.h" BEFORE any extern "C" blocks.
+//   Putting a C++ header under extern "C" may cause C linkage to be applied incorrectly,
+//   leading to signature mismatches, re-declarations, or link errors.
 
 # Skipping Fault Correction Attack via MILP
 
