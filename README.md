@@ -1,4 +1,4 @@
-# Improving Skipping Fault-Correction Attacks on Randomized Dilithium via MILP
+# Improving Skipping Fault Correction Attacks on Randomized Dilithium via MILP
 
 This repository contains the complete runnable implementation and experimental artifacts for the paper:
 
