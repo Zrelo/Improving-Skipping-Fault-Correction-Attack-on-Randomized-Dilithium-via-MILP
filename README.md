@@ -1,98 +1,146 @@
 # Improving Skipping Fault-Correction Attacks on Randomized Dilithium via MILP
 
-This repository contains the implementation and experimental artifacts for the paper:
+This repository contains the complete runnable implementation and experimental artifacts for the paper:
 
-> Improving Skipping Fault-Correction Attacks on Randomized Dilithium via MILP
+> **Improving Skipping Fault-Correction Attacks on Randomized Dilithium via MILP**
 
-The code is based on the original Dilithium fault-injection framework:
+The implementation is based on the original Dilithium fault-injection framework:
 
 https://github.com/Chair-for-Security-Engineering/dilithium-faults
 
-The present repository contains modifications developed on 2025-10-03 and is intended to support reproduction and extension of the corresponding experimental results.
+Our modifications were implemented on **October 3, 2025**. The repository is organized so that the complete runnable project is kept in the directory named:
 
-## Overview
+```text
+Improving Skipping Fault Correction Attack on Randomized Dilithium via MILP/
+```
 
-This project extends the original Dilithium implementation with fault-injection and correction-attack experiments targeting randomized signing. The code includes the modified attack logic and the evaluation setup used to assess the impact of skipping faults and related correction strategies.
+## Repository contents
 
-## Repository structure
+There are two different types of content in this repository:
+
+1. **Complete runnable implementation**
+
+   The directory
+
+   ```text
+   Improving Skipping Fault Correction Attack on Randomized Dilithium via MILP/
+   ```
+
+   contains the full source tree, build files, Dilithium implementation, attack implementation, and scripts required to compile and run the experiments.
+
+2. **Extracted description of the modifications**
+
+   The root-level file
+
+   ```text
+   correction_attacks_changes.cpp
+   ```
+
+   is not a separate replacement project. It records the changes made to the original `correction_attacks.cpp` implementation. In particular, it documents the Gurobi-based MILP recovery path and the related recovery-function modifications. It is provided to make the differences from the upstream implementation easier to inspect.
+
+   The complete runnable implementation should be built from the project directory, not from the root-level extracted changes file.
+
+## Directory structure
 
 ```text
 .
 ├── LICENSE
 ├── README.md
-├── Makefile
-├── correction_attacks.cpp
 ├── correction_attacks_changes.cpp
-├── statistics_attack.cpp
-├── dilithium/
-│   └── ...
-├── Improving Skipping Fault Correction Attack on Randomized Dilithium via MILP/
-│   └── ...
-└── other generated artifacts and experiment files
+└── Improving Skipping Fault Correction Attack on Randomized Dilithium via MILP/
+    ├── README
+    ├── Makefile
+    ├── run.sh
+    ├── correction_attacks.cpp
+    ├── correction_attacks.h
+    ├── statistics_attack.cpp
+    └── dilithium/
+        └── ...
 ```
 
-## License and attribution
+Within the complete runnable project:
 
-This repository is released under the Creative Commons Attribution 4.0 International License (CC BY 4.0).
+- `correction_attacks.cpp` contains the attack implementation used by the build;
+- `statistics_attack.cpp` contains the statistical experiment driver;
+- `run.sh` provides the experiment-running entry point;
+- `dilithium/` contains the Dilithium implementation and its build files;
+- `Makefile` builds the skipping-fault and shuffled-skipping-fault executables.
 
-See `LICENSE` for the full text.
+## Relation to the original implementation
 
-The original upstream implementation was developed by Elisabeth Krahmer and Georg Land and is attributed as follows:
+This work is based on the original implementation by Elisabeth Krahmer and Georg Land:
 
-- https://github.com/Chair-for-Security-Engineering/dilithium-faults
-- Original license statement: Creative Commons Attribution 4.0 International License (CC BY 4.0)
+- Repository: https://github.com/Chair-for-Security-Engineering/dilithium-faults
+- Relevant original implementation: `skippingFault/correction_attacks.cpp`
 
-Please preserve attribution and license notices when reusing or redistributing this code.
+The main modification is the replacement or extension of the original recovery procedure with a Gurobi-based integer linear programming (MILP/ILP) recovery path. The extracted file `correction_attacks_changes.cpp` describes these changes, including the solver configuration parameters and the modified recovery functions.
 
 ## Requirements
 
-This project has been developed and tested in a Linux environment with the following tools and libraries:
+The complete runnable implementation has been developed and tested in a Linux environment with:
 
 - GCC / G++
-- Make
+- GNU Make
 - fplll
 - NTL
 - GMP
 - MPFR
-- Gurobi (C++ and C API)
+- Gurobi, including the C++ and C libraries
 
-The root `Makefile` includes hard-coded local library paths such as:
+The project Makefile currently contains machine-specific paths. Before compiling, update them to match your local installation. For example, the following paths may need to be changed:
 
-- `/home/haiouc/fplll`
-- `/opt/gurobi1300/linux64`
+```text
+/home/haiouc/fplll
+/opt/gurobi1300/linux64
+```
 
-Before building, update these paths in the `Makefile` to match your local installation.
+A valid Gurobi license may also be required to run the MILP experiments.
 
-## Build
+## Build the complete runnable implementation
 
-From the repository root, run:
+Change into the directory containing the complete implementation:
+
+```bash
+cd "Improving Skipping Fault Correction Attack on Randomized Dilithium via MILP"
+```
+
+Review and update the compiler, include, and library paths in `Makefile`, then build all default targets:
 
 ```bash
 make
 ```
 
-This builds the attack binaries used for the skipping-fault experiments.
-
-## Main targets
-
-The default `make` target builds the following attack executables:
-
-- `test_2_skip`
-- `test_3_skip`
-- `test_5_skip`
-- `test_2_skip_shuff`
-- `test_3_skip_shuff`
-- `test_5_skip_shuff`
-
-To remove generated binaries and intermediate objects:
+To remove generated binaries and intermediate object files:
 
 ```bash
 make clean
 ```
 
-## Running the experiments
+## Executables
 
-After compilation, run the generated binaries directly from the repository root, for example:
+The default build produces the following programs:
+
+### Plain skipping-fault experiments
+
+```text
+test_2_skip
+test_3_skip
+test_5_skip
+```
+
+### Shuffled skipping-fault experiments
+
+```text
+test_2_skip_shuff
+test_3_skip_shuff
+test_5_skip_shuff
+```
+
+The numbers correspond to the Dilithium parameter sets used by the experiments.
+
+## Run the experiments
+
+After a successful build, run the programs from the complete project directory, for example:
 
 ```bash
 ./test_2_skip
@@ -100,7 +148,7 @@ After compilation, run the generated binaries directly from the repository root,
 ./test_5_skip
 ```
 
-and for shuffled variants:
+For the shuffled variants:
 
 ```bash
 ./test_2_skip_shuff
@@ -108,24 +156,40 @@ and for shuffled variants:
 ./test_5_skip_shuff
 ```
 
-The exact runtime, outputs, and parameter settings depend on the local environment and the selected solver configuration.
+The `run.sh` script in the same directory can also be used as the experiment entry point. Inspect the script before running it and adapt it to your local environment if necessary.
 
-## Reproducibility notes
+## Reproducibility
 
-For reproducibility, the following should be documented alongside the paper:
+For results reported in the paper, record the following information together with the repository version or commit:
 
-- compiler version
-- optimization flags
-- operating system
-- Gurobi version
-- fplll / NTL / GMP / MPFR versions
-- random seed or experiment configuration
-- number of trials used for statistical evaluation
+- operating system;
+- GCC and G++ versions;
+- compiler and optimization flags;
+- Gurobi version;
+- fplll, NTL, GMP, and MPFR versions;
+- Gurobi license and thread configuration;
+- values of the experiment parameters;
+- random seed, if applicable;
+- number of trials;
+- hardware and approximate runtime.
+
+Because MILP solver versions, hardware, and solver settings can affect runtime and search behavior, small differences in execution time may occur across systems.
+
+## License and attribution
+
+The original work and the modifications in this repository are released under the Creative Commons Attribution 4.0 International License (CC BY 4.0). See `LICENSE` for the applicable attribution and license information.
+
+When reusing or redistributing this repository, please:
+
+- cite the associated publication;
+- credit the original implementation by Elisabeth Krahmer and Georg Land;
+- credit the modifications made for this work;
+- preserve the relevant copyright and license notices.
 
 ## Citation
 
-If you use this code in a paper or project, please cite the associated publication and include the repository URL and commit/version used.
+If you use this implementation or the experimental artifacts, please cite the associated publication and specify the repository commit or release used for your results.
 
-## Contact
+## Responsible use
 
-For questions regarding the implementation or reproduction of the results, please contact the repository owner or the corresponding author of the associated paper.
+This repository is provided for academic research, security evaluation, and reproducibility. Use it only in environments for which you have explicit authorization and comply with all applicable laws, regulations, and institutional policies.
