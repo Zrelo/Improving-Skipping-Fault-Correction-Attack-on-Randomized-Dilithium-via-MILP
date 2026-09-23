@@ -1,2 +1,10 @@
 # Improving-Skipping-Fault-Correction-Attack-on-Randomized-Dilithium-via-MILP
-Our modifications were implemented on 2025-10-03. This file is an improved variant of the original implementation of Krahmer et al. at https://github.com/Chair-for-Security-Engineering/dilithium-faults. We provide the files "correction_attacks_changes.cpp && Make file", which only contain our changes, and the full test code in the folder "Improving Skipping Fault Correction Attacks on Randomized Dilithium via MILP" after integration with the original code in the folder "skippingFault" at https://github.com/Chair-for-Security-Engineering/dilithium-faults
+This repository contains the official implementation and experimental artifacts
+for the paper:
+
+"Improving Skipping Fault-Correction Attacks on Randomized Dilithium via MILP"
+
+The implementation is based on the original Dilithium fault-injection framework:
+https://github.com/Chair-for-Security-Engineering/dilithium-faults
+
+Our modifications were completed on October 3, 2025.
